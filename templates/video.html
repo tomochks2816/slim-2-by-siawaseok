@@ -12,20 +12,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
+            padding: 10px 5%;
             background-color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         /* アイコン */
-        .navbar-logo {
-            display: flex;
-            align-items: center;
-        }
-
         .navbar-logo img {
-            width: 36px; /* アイコンのサイズ */
-            height: 36px;
+            width: 5%;
+            height: auto;
         }
 
         /* 検索バー */
@@ -36,7 +31,7 @@
         }
 
         .navbar-search form {
-            width: 500px; /* 検索バーの長さを固定 */
+            width: 60%;
         }
 
         .navbar-search input[type="search"] {
@@ -44,27 +39,27 @@
             padding: 8px 16px;
             border: 1px solid #ccc;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 1em;
             outline: none;
         }
 
         /* 全体レイアウト */
         #contents {
             display: flex;
-            padding: 20px;
+            padding: 20px 5%;
         }
 
         #player-container {
             flex: 3;
-            background-color: black;
             padding: 10px;
-            border-radius: 10px;
+            width: 100%;
+            text-align: left;
         }
 
         #player {
             width: 100%;
             height: auto;
-            max-height: 80vh;
+            max-height: 30vh;
             outline: none;
             border-radius: 10px;
         }
@@ -72,7 +67,7 @@
         .sidebar {
             flex: 1;
             padding: 10px;
-            margin-left: 20px;
+            margin-top: 20px;
         }
 
         /* 関連動画のサムネイル */
@@ -83,33 +78,66 @@
         }
 
         .thumbnail img {
-            width: 120px;
+            width: 30%;
             margin-right: 10px;
             border-radius: 10px;
         }
 
+        /* 関連動画のタイトルが28文字を超えたら「…」で切り捨て */
         .thumbnail p {
-            font-size: 14px;
+            font-size: 1em;
             color: #333;
             margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
         }
 
-        /* モバイル対応 */
+        /* 動画タイトルも28文字超えたら「…」で切り捨て */
+        h1 {
+            font-size: 1.5em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        /* モバイルおよびタブレット対応 */
+        @media (max-width: 1024px) {
+            #player-container {
+                max-width: 100%;
+                padding: 10px 0;
+            }
+
+            .navbar-logo img {
+                width: 8%;
+            }
+
+            .navbar-search form {
+                width: 80%;
+            }
+
+            .thumbnail img {
+                width: 40%;
+            }
+
+            .sidebar {
+                margin-left: 0;
+            }
+        }
+
         @media (max-width: 768px) {
             #contents {
                 flex-direction: column;
             }
 
-            #player-container {
-                max-width: 100%;
-            }
-
             .navbar-search form {
-                width: 100%; /* モバイルでは検索バーを全幅に */
+                width: 90%;
             }
 
             .sidebar {
-                margin-left: 0;
+                margin-top: 10px;
             }
         }
     </style>
@@ -164,7 +192,7 @@
         document.getElementById("player").loop = document.getElementById("loop").checked;
         function changeloop() { document.cookie = "loop=" + document.getElementById("loop").checked + ";max-age=2592000;"; document.getElementById("player").loop = document.getElementById("loop").checked }
 
-        document.getElementById("player").style.maxHeight = document.documentElement.clientHeight * 0.8 + "px";
+        document.getElementById("player").style.maxHeight = document.documentElement.clientHeight * 0.3 + "px"; // 動画の高さを調整
 
         document.onkeydown = keydown;
         function keydown(key) {
