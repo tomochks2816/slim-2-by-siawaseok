@@ -50,7 +50,7 @@
         }
 
         #player-container {
-            flex: 2; /* 動画を2/3に調整 */
+            flex: 4; /* 動画を大きくするために4:1の割合に調整 */
             padding: 10px;
             width: 100%;
             text-align: left;
@@ -59,12 +59,13 @@
         #player {
             width: 100%;
             height: auto;
+            aspect-ratio: 16/9; /* 動画の比率を16:9に固定 */
             outline: none; /* 黒い縁を取り除く */
             border-radius: 10px; /* プレイヤーの角を丸く */
         }
 
         .sidebar {
-            flex: 1; /* サイドバーを1/3に調整 */
+            flex: 1; /* サイドバーを小さく */
             padding: 10px;
             margin-top: 20px;
         }
@@ -77,7 +78,7 @@
         }
 
         .thumbnail img {
-            width: 30%;
+            width: 40%;
             margin-right: 10px;
             border-radius: 10px;
         }
