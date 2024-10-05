@@ -4,10 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>連番を簡単に生成！！</title>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <title>YouTube風サイト</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/2.0.6/pure-min.css">
     <style>
         /* ナビゲーションバー */
@@ -49,24 +46,22 @@
         /* 全体レイアウト */
         #contents {
             display: flex;
-            flex-direction: column;
             padding: 20px 5%;
         }
 
         #player-container {
             flex: 3;
-            background-color: black;
             padding: 10px;
-            border-radius: 10px;
             width: 100%;
+            text-align: left; /* プレイヤーを左に配置 */
         }
 
         #player {
             width: 100%;
             height: auto;
-            max-height: 80vh;
-            outline: none;
-            border-radius: 10px;
+            max-height: 30vh; /* 動画の最大高さを調整 */
+            outline: none; /* 黒い縁を取り除く */
+            border-radius: 10px; /* プレイヤーの角を丸く */
         }
 
         .sidebar {
@@ -183,7 +178,7 @@
         document.getElementById("player").loop = document.getElementById("loop").checked;
         function changeloop() { document.cookie = "loop=" + document.getElementById("loop").checked + ";max-age=2592000;"; document.getElementById("player").loop = document.getElementById("loop").checked }
 
-        document.getElementById("player").style.maxHeight = document.documentElement.clientHeight * 0.8 + "px";
+        document.getElementById("player").style.maxHeight = document.documentElement.clientHeight * 0.3 + "px"; // 動画の高さを調整
 
         document.onkeydown = keydown;
         function keydown(key) {
