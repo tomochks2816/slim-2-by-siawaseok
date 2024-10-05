@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube風サイト</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/2.0.6/pure-min.css">
+    <style>
+        /* ナビゲーションバー */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* アイコン */
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-logo img {
+            width: 36px; /* アイコンのサイズ */
+            height: 36px;
+        }
+
+        /* 検索バー */
+        .navbar-search {
+            display: flex;
+            justify-content: center;
+            flex-grow: 1;
+        }
+
+        .navbar-search form {
+            width: 500px; /* 検索バーの長さを固定 */
+        }
+
+        .navbar-search input[type="search"] {
+            width: 100%;
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        /* 全体レイアウト */
+        #contents {
+            display: flex;
+            padding: 20px;
+        }
+
+        #player-container {
+            flex: 3;
+            background-color: black;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        #player {
+            width: 100%;
+            height: auto;
+            max-height: 80vh;
+            outline: none;
+            border-radius: 10px;
+        }
+
+        .sidebar {
+            flex: 1;
+            padding: 10px;
+            margin-left: 20px;
+        }
+
+        /* 関連動画のサムネイル */
+        .thumbnail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .thumbnail img {
+            width: 120px;
+            margin-right: 10px;
+            border-radius: 10px;
+        }
+
+        .thumbnail p {
+            font-size: 14px;
+            color: #333;
+            margin: 0;
+        }
+
+        /* モバイル対応 */
+        @media (max-width: 768px) {
+            #contents {
+                flex-direction: column;
+            }
+
+            #player-container {
+                max-width: 100%;
+            }
+
+            .navbar-search form {
+                width: 100%; /* モバイルでは検索バーを全幅に */
+            }
+
+            .sidebar {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ナビゲーションバー -->
+    <div class="navbar">
+        <!-- 左端のアイコン -->
+        <div class="navbar-logo">
+            <a href="/">
+                <img src="https://www.youtube.com/s/desktop/daa4e47c/img/favicon_144x144.png" alt="YouTube Icon">
+            </a>
+        </div>
+
+        <!-- 中央の検索バー -->
+        <div class="navbar-search">
+            <form action="/search" method="get">
+                <input type="search" name="q" placeholder="検索" />
+            </form>
+        </div>
+    </div>
+
+    <div id="contents">
+        <!-- ビデオプレイヤーエリア -->
+        <div id="player-container">
+            <video playsinline="" poster="https://img.youtube.com/vi/{{ videoid }}/0.jpg" id="player" controls="">
+                <source src="{{videourls[0]}}">
+            </video>
+            <h1>{{ videotitle }}</h1>
+        </div>
+
+        <!-- 関連動画サイドバー -->
+        <div class="sidebar">
+            <h3>関連動画</h3>
+            {% for re in res %}
+            <a href="/watch?v={{ re['id'] }}" class="thumbnail">
+                <img src="https://img.youtube.com/vi/{{ re['id'] }}/0.jpg" alt="関連動画">
+                <p>{{re["title"]}}</p>
+            </a>
+            <a href="/channel/{{re['authorId']}}">{{re["author"]}}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        document.cookie = "yuki=True;max-age=2592000;";
+        function getCookie(name) { let matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)")); return matches ? decodeURIComponent(matches[1]) : undefined; }
+
+        document.getElementById("loop").checked = getCookie("loop");
+        document.getElementById("player").loop = document.getElementById("loop").checked;
+        function changeloop() { document.cookie = "loop=" + document.getElementById("loop").checked + ";max-age=2592000;"; document.getElementById("player").loop = document.getElementById("loop").checked }
+
+        document.getElementById("player").style.maxHeight = document.documentElement.clientHeight * 0.8 + "px";
+
+        document.onkeydown = keydown;
+        function keydown(key) {
+            var v = document.getElementById("player");
+            if (key.keyCode == 32 || key.keyCode == 75) {
+                if (v.paused == true) {
+                    v.play();
+                } else {
+                    v.pause();
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
