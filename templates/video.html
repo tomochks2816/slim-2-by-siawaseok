@@ -19,7 +19,7 @@
 
         /* アイコン */
         .navbar-logo img {
-            width: 5%;
+            width: 5%; /* アイコンのサイズを%で調整 */
             height: auto;
         }
 
@@ -31,7 +31,7 @@
         }
 
         .navbar-search form {
-            width: 60%;
+            width: 60%; /* 検索バーの長さを%で調整 */
         }
 
         .navbar-search input[type="search"] {
@@ -50,7 +50,7 @@
         }
 
         #player-container {
-            flex: 3;
+            flex: 2; /* 動画を2/3に調整 */
             padding: 10px;
             width: 100%;
             text-align: left;
@@ -59,13 +59,12 @@
         #player {
             width: 100%;
             height: auto;
-            max-height: 30vh;
-            outline: none;
-            border-radius: 10px;
+            outline: none; /* 黒い縁を取り除く */
+            border-radius: 10px; /* プレイヤーの角を丸く */
         }
 
         .sidebar {
-            flex: 1;
+            flex: 1; /* サイドバーを1/3に調整 */
             padding: 10px;
             margin-top: 20px;
         }
@@ -83,20 +82,10 @@
             border-radius: 10px;
         }
 
-        /* 関連動画のタイトルが28文字を超えたら「…」で切り捨て */
         .thumbnail p {
             font-size: 1em;
             color: #333;
             margin: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
-        }
-
-        /* 動画タイトルも28文字超えたら「…」で切り捨て */
-        h1 {
-            font-size: 1.5em;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -111,15 +100,15 @@
             }
 
             .navbar-logo img {
-                width: 8%;
+                width: 8%; /* モバイルやタブレットでアイコンのサイズを調整 */
             }
 
             .navbar-search form {
-                width: 80%;
+                width: 80%; /* モバイルやタブレットで検索バーを広げる */
             }
 
             .thumbnail img {
-                width: 40%;
+                width: 40%; /* サムネイル画像のサイズ調整 */
             }
 
             .sidebar {
@@ -133,7 +122,7 @@
             }
 
             .navbar-search form {
-                width: 90%;
+                width: 90%; /* モバイルでは検索バーを全幅に */
             }
 
             .sidebar {
@@ -192,8 +181,6 @@
         document.getElementById("player").loop = document.getElementById("loop").checked;
         function changeloop() { document.cookie = "loop=" + document.getElementById("loop").checked + ";max-age=2592000;"; document.getElementById("player").loop = document.getElementById("loop").checked }
 
-        document.getElementById("player").style.maxHeight = document.documentElement.clientHeight * 0.3 + "px"; // 動画の高さを調整
-
         document.onkeydown = keydown;
         function keydown(key) {
             var v = document.getElementById("player");
@@ -207,5 +194,4 @@
         }
     </script>
 </body>
-
 </html>
