@@ -2,6 +2,8 @@
 <html lang="ja">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link rel="icon" href="https://m.youtube.com/static/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="https://m.youtube.com/static/apple-touch-icon-180x180-precomposed.png" sizes="180x180">
     <link rel="apple-touch-icon" href="https://m.youtube.com/static/apple-touch-icon-167x167-precomposed.png" sizes="167x167">
@@ -25,8 +27,6 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/2.0.6/pure-min.css">
     <style>
         /* ナビゲーションバー */
@@ -34,20 +34,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
+            padding: 10px 5%;
             background-color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         /* アイコン */
-        .navbar-logo {
-            display: flex;
-            align-items: center;
-        }
-
         .navbar-logo img {
-            width: 36px; /* アイコンのサイズ */
-            height: 36px;
+            width: 5%; /* アイコンのサイズを%で調整 */
+            height: auto;
         }
 
         /* 検索バー */
@@ -58,7 +53,7 @@
         }
 
         .navbar-search form {
-            width: 500px; /* 検索バーの長さを固定 */
+            width: 60%; /* 検索バーの長さを%で調整 */
         }
 
         .navbar-search input[type="search"] {
@@ -66,14 +61,15 @@
             padding: 8px 16px;
             border: 1px solid #ccc;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 1em;
             outline: none;
         }
 
         /* 全体レイアウト */
         #contents {
             display: flex;
-            padding: 20px;
+            flex-direction: column;
+            padding: 20px 5%;
         }
 
         #player-container {
@@ -81,6 +77,7 @@
             background-color: black;
             padding: 10px;
             border-radius: 10px;
+            width: 100%;
         }
 
         #player {
@@ -94,7 +91,7 @@
         .sidebar {
             flex: 1;
             padding: 10px;
-            margin-left: 20px;
+            margin-top: 20px;
         }
 
         /* 関連動画のサムネイル */
@@ -105,33 +102,52 @@
         }
 
         .thumbnail img {
-            width: 120px;
+            width: 30%;
             margin-right: 10px;
             border-radius: 10px;
         }
 
         .thumbnail p {
-            font-size: 14px;
+            font-size: 1em;
             color: #333;
             margin: 0;
         }
 
-        /* モバイル対応 */
+        /* モバイルおよびタブレット対応 */
+        @media (max-width: 1024px) {
+            #player-container {
+                max-width: 100%;
+                padding: 10px 0;
+            }
+
+            .navbar-logo img {
+                width: 8%; /* モバイルやタブレットでアイコンのサイズを調整 */
+            }
+
+            .navbar-search form {
+                width: 80%; /* モバイルやタブレットで検索バーを広げる */
+            }
+
+            .thumbnail img {
+                width: 40%; /* サムネイル画像のサイズ調整 */
+            }
+
+            .sidebar {
+                margin-left: 0;
+            }
+        }
+
         @media (max-width: 768px) {
             #contents {
                 flex-direction: column;
             }
 
-            #player-container {
-                max-width: 100%;
-            }
-
             .navbar-search form {
-                width: 100%; /* モバイルでは検索バーを全幅に */
+                width: 90%; /* モバイルでは検索バーを全幅に */
             }
 
             .sidebar {
-                margin-left: 0;
+                margin-top: 10px;
             }
         }
     </style>
