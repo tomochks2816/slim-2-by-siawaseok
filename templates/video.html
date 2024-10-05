@@ -50,22 +50,21 @@
         }
 
         #player-container {
-            flex: 4; /* 動画を大きくするために4:1の割合に調整 */
+            flex: 3;
             padding: 10px;
             width: 100%;
-            text-align: left;
+            text-align: left; /* プレイヤーを左に配置 */
         }
 
         #player {
             width: 100%;
             height: auto;
-            aspect-ratio: 16/9; /* 動画の比率を16:9に固定 */
             outline: none; /* 黒い縁を取り除く */
             border-radius: 10px; /* プレイヤーの角を丸く */
         }
 
         .sidebar {
-            flex: 1; /* サイドバーを小さく */
+            flex: 1;
             padding: 10px;
             margin-top: 20px;
         }
@@ -78,19 +77,23 @@
         }
 
         .thumbnail img {
-            width: 40%;
+            width: 30%;
             margin-right: 10px;
             border-radius: 10px;
         }
 
+        /* 関連動画のタイトルを小さくし、2行に収める */
         .thumbnail p {
-            font-size: 1em;
+            font-size: 0.8em; /* 文字の大きさを小さくする */
             color: #333;
             margin: 0;
-            white-space: nowrap;
+            white-space: normal; /* 複数行に対応する */
             overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
+            text-overflow: ellipsis; /* テキストが長すぎる場合の省略 */
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* 最大2行まで表示 */
+            -webkit-box-orient: vertical;
+            max-width: 100%; /* タイトルを画面の端まで表示 */
         }
 
         /* モバイルおよびタブレット対応 */
@@ -167,32 +170,13 @@
             {% for re in res %}
             <a href="/watch?v={{ re['id'] }}" class="thumbnail">
                 <img src="https://img.youtube.com/vi/{{ re['id'] }}/0.jpg" alt="関連動画">
-                <p>{{re["title"]}}</p>
+                <p class="title">{{re["title"]}}</p>
             </a>
             <a href="/channel/{{re['authorId']}}">{{re["author"]}}</a>
             {% endfor %}
         </div>
     </div>
 
-    <script>
-        document.cookie = "yuki=True;max-age=2592000;";
-        function getCookie(name) { let matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)")); return matches ? decodeURIComponent(matches[1]) : undefined; }
-
-        document.getElementById("loop").checked = getCookie("loop");
-        document.getElementById("player").loop = document.getElementById("loop").checked;
-        function changeloop() { document.cookie = "loop=" + document.getElementById("loop").checked + ";max-age=2592000;"; document.getElementById("player").loop = document.getElementById("loop").checked }
-
-        document.onkeydown = keydown;
-        function keydown(key) {
-            var v = document.getElementById("player");
-            if (key.keyCode == 32 || key.keyCode == 75) {
-                if (v.paused == true) {
-                    v.play();
-                } else {
-                    v.pause();
-                }
-            }
-        }
-    </script>
 </body>
+
 </html>
