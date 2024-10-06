@@ -69,48 +69,47 @@
             margin-top: 20px;
         }
 
-/* 関連動画のサムネイル */
-.thumbnail {
-    display: flex;
-    align-items: center;
-    margin-bottom: 12px; /* 少し大きくする */
-}
+        /* 関連動画のサムネイル */
+        .thumbnail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px; /* 間隔を少し広げる */
+        }
 
-.thumbnail img {
-    width: 35%; /* サムネイル画像の幅を少し大きく */
-    margin-right: 12px; /* 間隔を少し広げる */
-    border-radius: 10px;
-}
+        .thumbnail img {
+            width: 35%; /* サムネイル画像の幅を少し大きく */
+            margin-right: 12px;
+            border-radius: 10px;
+        }
 
-/* 関連動画のタイトルを小さくし、2行に収める */
-         .thumbnail p {
-             font-size: 0.85em; /* 文字の大きさを少し大きくする */
-             color: #333;
-             margin: 0;
-             white-space: normal;
-             overflow: hidden;
-             text-overflow: ellipsis;
-             display: -webkit-box;
-             -webkit-line-clamp: 2; /* 最大2行まで表示 */
-             -webkit-box-orient: vertical;
-             max-width: 100%; /* タイトルを画面の端まで表示 */
-           }
+        /* 関連動画のタイトルを大きくし、2行に収める */
+        .thumbnail .title {
+            font-size: 1em; /* タイトルの文字サイズ */
+            color: #333;
+            margin: 0;
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* 最大2行まで表示 */
+            -webkit-box-orient: vertical;
+            max-width: 100%;
+        }
+
+        /* チャンネル名をタイトルの下に表示し、文字サイズを小さく */
+        .thumbnail + a {
+            font-size: 0.8em; /* チャンネル名の文字サイズを小さく */
+            color: #666;
+            margin-top: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            text-decoration: underline; /* 青色のアンダーライン */
+        }
 
         /* モバイルおよびタブレット対応 */
         @media (max-width: 1024px) {
-            #player-container {
-                max-width: 100%;
-                padding: 10px 0;
-            }
-
-            .navbar-logo img {
-                width: 8%; /* モバイルやタブレットでアイコンのサイズを調整 */
-            }
-
-            .navbar-search form {
-                width: 80%; /* モバイルやタブレットで検索バーを広げる */
-            }
-
             .thumbnail img {
                 width: 40%; /* サムネイル画像のサイズ調整 */
             }
