@@ -69,32 +69,32 @@
             margin-top: 20px;
         }
 
-        /* 関連動画のサムネイル */
-        .thumbnail {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
+/* 関連動画のサムネイル */
+.thumbnail {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px; /* 少し大きくする */
+}
 
-        .thumbnail img {
-            width: 30%;
-            margin-right: 10px;
-            border-radius: 10px;
-        }
+.thumbnail img {
+    width: 35%; /* サムネイル画像の幅を少し大きく */
+    margin-right: 12px; /* 間隔を少し広げる */
+    border-radius: 10px;
+}
 
-        /* 関連動画のタイトルを小さくし、2行に収める */
-        .thumbnail p {
-            font-size: 0.8em; /* 文字の大きさを小さくする */
-            color: #333;
-            margin: 0;
-            white-space: normal; /* 複数行に対応する */
-            overflow: hidden;
-            text-overflow: ellipsis; /* テキストが長すぎる場合の省略 */
-            display: -webkit-box;
-            -webkit-line-clamp: 2; /* 最大2行まで表示 */
-            -webkit-box-orient: vertical;
-            max-width: 100%; /* タイトルを画面の端まで表示 */
-        }
+/* 関連動画のタイトルを小さくし、2行に収める */
+         .thumbnail p {
+             font-size: 0.85em; /* 文字の大きさを少し大きくする */
+             color: #333;
+             margin: 0;
+             white-space: normal;
+             overflow: hidden;
+             text-overflow: ellipsis;
+             display: -webkit-box;
+             -webkit-line-clamp: 2; /* 最大2行まで表示 */
+             -webkit-box-orient: vertical;
+             max-width: 100%; /* タイトルを画面の端まで表示 */
+           }
 
         /* モバイルおよびタブレット対応 */
         @media (max-width: 1024px) {
