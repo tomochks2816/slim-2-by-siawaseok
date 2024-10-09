@@ -9,7 +9,7 @@ import subprocess
 from cache import cache
 
 
-max_api_wait_time = 5
+max_api_wait_time = 6
 max_time = 10
 apis = [
     r"https://invidious.jing.rocks/",
@@ -36,7 +36,47 @@ def is_json(json_str):
         pass
     return result
 
+def apirequest(url):
+    global apis
+    global max_time
+    starttime = time.time()
+    for api in apis:
+        if  time.time() - starttime >= max_time -1:
+            break
+        try:
+            res = requests.get(api+url,timeout=max_api_wait_time)
+            if res.status_code == 200 and is_json(res.text):
+                return res.text
+            else:
+                print(f"エラー:{api}")
+                apis.append(api)
+                apis.remove(api)
+        except:
+            print(f"タイムアウト:{api}")
+            apis.append(api)
+            apis.remove(api)
+    raise APItimeoutError("APIがタイムアウトしました")
 
+def apichannelrequest(url):
+    global apichannels
+    global max_time
+    starttime = time.time()
+    for api in apichannels:
+        if  time.time() - starttime >= max_time -1:
+            break
+        try:
+            res = requests.get(api+url,timeout=max_api_wait_time)
+            if res.status_code == 200 and is_json(res.text):
+                return res.text
+            else:
+                print(f"エラー:{api}")
+                apichannels.append(api)
+                apichannels.remove(api)
+        except:
+            print(f"タイムアウト:{api}")
+            apichannels.append(api)
+            apichannels.remove(api)
+    raise APItimeoutError("APIがタイムアウトしました")
 
 def apicommentsrequest(url):
     global apicomments
@@ -59,58 +99,40 @@ def apicommentsrequest(url):
             apicomments.remove(api)
     raise APItimeoutError("APIがタイムアウトしました")
 
-def apirequest(url):
-    global apis
-    global max_time
-    starttime = time.time()
-    for api in apis:
-        if time.time() - starttime >= max_time - 1:
-            break
-        try:
-            res = requests.get(api + url, timeout=max_api_wait_time)
-            if res.status_code == 200 and is_json(res.text):
-                print(f"成功したAPI: {api}")  # APIのリンクをログに出力
-                return res.text
-            else:
-                print(f"エラー: {api}")
-                apis.append(api)
-                apis.remove(api)
-        except:
-            print(f"タイムアウト: {api}")
-            apis.append(api)
-            apis.remove(api)
-    raise APItimeoutError("APIがタイムアウトしました")
+from fastapi import FastAPI
+import requests
+import json
+import urllib.parse
 
-def apichannelrequest(url):
-    global apichannels
-    global max_time
-    starttime = time.time()
-    for api in apichannels:
-        if time.time() - starttime >= max_time - 1:
-            break
-        try:
-            res = requests.get(api + url, timeout=max_api_wait_time)
-            if res.status_code == 200 and is_json(res.text):
-                print(f"成功したAPI: {api}")  # APIのリンクをログに出力
-                return res.text
-            else:
-                print(f"エラー: {api}")
-                apichannels.append(api)
-                apichannels.remove(api)
-        except:
-            print(f"タイムアウト: {api}")
-            apichannels.append(api)
-            apichannels.remove(api)
-    raise APItimeoutError("APIがタイムアウトしました")
-
-def get_info(request):
-    global version
-    return json.dumps([version,os.environ.get('RENDER_EXTERNAL_URL'),str(request.scope["headers"]),str(request.scope['router'])[39:-2]])
 
 def get_data(videoid):
     global logs
-    t = json.loads(apirequest(r"api/v1/videos/"+ urllib.parse.quote(videoid)))
-    return [{"id":i["videoId"],"title":i["title"],"authorId":i["authorId"],"author":i["author"]} for i in t["recommendedVideos"]],list(reversed([i["url"] for i in t["formatStreams"]]))[:2],t["descriptionHtml"].replace("\n","<br>"),t["title"],t["authorId"],t["author"],t["authorThumbnails"][-1]["url"]
+    t = json.loads(apirequest(r"api/v1/videos/" + urllib.parse.quote(videoid)))
+
+    # 関連動画を解析してリストにする
+    related_videos = [
+        {
+            "id": i["videoId"],
+            "title": i["title"],
+            "authorId": i["authorId"],
+            "author": i["author"],
+            "viewCount": i["viewCount"]  # 再生回数を追加（デフォルトは0）
+        }
+        for i in t["recommendedVideos"]
+    ]
+
+    # 結果を返す
+    return (
+        related_videos,  # 関連動画リスト
+        list(reversed([i["url"] for i in t["formatStreams"]]))[:2],  # 逆順で2つのストリームURLを取得
+        t["descriptionHtml"].replace("\n", "<br>"),  # 説明文に改行を追加
+        t["title"],  # 動画タイトル
+        t["authorId"],  # 作者ID
+        t["author"],  # 作者名
+        t["authorThumbnails"][-1]["url"],  # 最後のサムネイルURL
+        t["viewCount"]  # 動画の再生回数を追加
+    )
+
 
 def get_search(q,page):
     global logs
@@ -148,10 +170,10 @@ def get_comments(videoid):
 def get_replies(videoid,key):
     t = json.loads(apicommentsrequest(fr"api/v1/comments/{videoid}?hmac_key={key}&hl=jp&format=html"))["contentHtml"]
 
-def get_level(yuki):
+def get_level(word):
     for i1 in range(1,13):
         with open(f'Level{i1}.txt', 'r', encoding='UTF-8', newline='\n') as f:
-            if siawaseok in [i2.rstrip("\r\n") for i2 in f.readlines()]:
+            if word in [i2.rstrip("\r\n") for i2 in f.readlines()]:
                 return i1
     return 0
 
@@ -187,7 +209,7 @@ from typing import Union
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 app.mount("/css", StaticFiles(directory="./css"), name="static")
-app.mount("/yuki", StaticFiles(directory="./blog", html=True), name="static")
+app.mount("/word", StaticFiles(directory="./blog", html=True), name="static")
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 from fastapi.templating import Jinja2Templates
@@ -204,7 +226,7 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
         response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
         return template("home.html",{"request": request})
     print(check_cokie(yuki))
-    return redirect("/yuki")
+    return redirect("/word")
 
 @app.get('/watch', response_class=HTMLResponse)
 def video(v:str,response: Response,request: Request,yuki: Union[str] = Cookie(None),proxy: Union[str] = Cookie(None)):
