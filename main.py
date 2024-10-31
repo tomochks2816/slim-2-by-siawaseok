@@ -8,8 +8,8 @@ import os
 import subprocess
 from cache import cache
 
-max_api_wait_time = 10
-max_time = 15 # タイムアウトまでの時間を15秒に変更
+max_api_wait_time = 3
+max_time = 10 # タイムアウトまでの時間を15秒に変更
 apis = [
 r"https://invidious.jing.rocks/",
 r"https://inv.nadeko.net/",
